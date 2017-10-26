@@ -1,36 +1,69 @@
 package BlackJack.controller;
 
 import BlackJack.view.IView;
+
+import java.util.ArrayList;
+
+import BlackJack.model.Card;
 import BlackJack.model.Game;
+import BlackJack.model.IObserver;
 
-public class PlayGame {
+public class PlayGame implements IObserver {
+	private Game a_game;
+	private IView a_view;
 
-  public boolean Play(Game a_game, IView a_view) {
-    a_view.DisplayWelcomeMessage();
-    
-    a_view.DisplayDealerHand(a_game.GetDealerHand(), a_game.GetDealerScore());
-    a_view.DisplayPlayerHand(a_game.GetPlayerHand(), a_game.GetPlayerScore());
+	
+	public PlayGame(Game a_game, IView a_view) {
+		this.a_game = a_game;
+		this.a_view = a_view;
+		this.a_game.AddObservers(this);
+	}
 
-    if (a_game.IsGameOver())
-    {
-        a_view.DisplayGameOver(a_game.IsDealerWinner());
-    }
+	public boolean Play() {
+		this.a_view.DisplayWelcomeMessage();
+		int input = a_view.GetInput();
+		switch (input) {
+		case 'p':
+			a_game.NewGame();
+			return true;
+		case 'h':
+			a_game.Hit();
+			return true;
+		case 's':
+			a_game.Stand();
+			return true;
+		case 'q':
+			return false;
+		default:
+			return true;
+		}
+	}
 
-    int input = a_view.GetInput();
-    
-    if (input == 'p')
-    {
-        a_game.NewGame();
-    }
-    else if (input == 'h')
-    {
-        a_game.Hit();
-    }
-    else if (input == 's')
-    {
-        a_game.Stand();
-    }
+	@Override
+	public void NewCardDealt() {
+		try {
+			a_view.DisplayDealerHand(HandToStringArray(a_game.GetDealerHand()), a_game.GetDealerScore());
+			a_view.DisplayPlayerHand(HandToStringArray(a_game.GetPlayerHand()), a_game.GetPlayerScore());
 
-    return input != 'q';
-  }
+			if (a_game.IsGameOver()) {
+				a_view.DisplayGameOver(a_game.IsDealerWinner());
+			}
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String[] HandToStringArray(Iterable<Card> a_hand) {
+		ArrayList<String> list = new ArrayList<String>();
+		for (Card c:a_hand) {
+			String s = c.GetValue().toString();
+			s += ",";
+			s += c.GetColor().toString();
+			list.add(s);
+		}
+		String[] ss = new String[list.size()];
+		ss = list.toArray(ss);
+		return ss;
+	}
 }

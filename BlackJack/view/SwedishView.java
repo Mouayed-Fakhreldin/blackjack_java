@@ -1,6 +1,6 @@
 package BlackJack.view;
 
-public class SwedishView implements IView 
+public class SwedishView //implements IView 
     {
         public void DisplayWelcomeMessage()
         {
