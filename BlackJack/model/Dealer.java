@@ -23,8 +23,7 @@ public class Dealer extends Player {
 
 	public void DealCardTo(Player a_player, boolean cardIsShown) {
 		Card a_card = m_deck.GetCard();
-		if (cardIsShown)
-			a_card.Show(true);
+		a_card.Show(cardIsShown);
 		a_player.DealCard(a_card);
 	}
 

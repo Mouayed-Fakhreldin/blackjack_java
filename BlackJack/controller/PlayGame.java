@@ -1,7 +1,7 @@
 package BlackJack.controller;
 
 import BlackJack.view.IView;
-
+import BlackJack.view.IView.Input;
 import java.util.ArrayList;
 
 import BlackJack.model.Card;
@@ -21,18 +21,18 @@ public class PlayGame implements IObserver {
 
 	public boolean Play() {
 		this.a_view.DisplayWelcomeMessage();
-		int input = a_view.GetInput();
+		Input input = a_view.GetInput();
 		switch (input) {
-		case 'p':
+		case PLAY:
 			a_game.NewGame();
 			return true;
-		case 'h':
+		case HIT:
 			a_game.Hit();
 			return true;
-		case 's':
+		case STAND:
 			a_game.Stand();
 			return true;
-		case 'q':
+		case QUIT:
 			return false;
 		default:
 			return true;
