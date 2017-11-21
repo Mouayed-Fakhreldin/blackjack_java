@@ -1,0 +1,2 @@
+Inorder to run the jar file Go to Command line and navigate to the file's location
+and type 'java -jar jar.jar' 
